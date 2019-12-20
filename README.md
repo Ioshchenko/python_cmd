@@ -1,2 +1,1 @@
-# python_cmd
-Console utility
+# Python Console utility project
