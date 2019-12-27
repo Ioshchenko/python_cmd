@@ -1,7 +1,7 @@
 import argparse
-import  shema, json
+import json
+import shema
 from validator import validate
-
 
 parser = argparse.ArgumentParser(description='Console utility for generating test data based on provided data schema')
 parser.add_argument('-path_to_save_files', help='Where all files need to save.')
