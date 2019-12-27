@@ -1,11 +1,9 @@
 import argparse
 import json
 import sys
-import uuid
 
 import shema
-import utils
-import random
+import file_utils
 from console_exception import ConsoleException
 
 parser = argparse.ArgumentParser(description='Console utility for generating test data based on provided data schema')
@@ -15,36 +13,24 @@ parser.add_argument('-data_lines', help='Count of lines for each file.', nargs='
 parser.add_argument('-files_count', help='Json file count. If files_count = 0 print all output to console.', type=int,
                     default=1)
 parser.add_argument('-file_name', help='Base file_name.', default='data')
-parser.add_argument('-file_prefix', help='Prefix for file name to use if it more that 1 file.', default='count1')
+parser.add_argument('-file_prefix', help='Prefix for file name to use if it more that 1 file.', default='count')
+parser.add_argument('-clear_path', help='If this flag is on, before the script starts creating new data files, '
+                                        'all files in path_to_save_files that match file_name will be deleted.', default='on')
 
 
 def generate(params):
     lines = shema.generate(params.data_schema, params.data_lines)
-    files_count = utils.get_file_count(params.files_count)
+    files_count = _get_file_count(params.files_count)
     if files_count == 0:
         print(json.dumps(lines, indent=2))
     else:
-        folder = utils.get_path(params)
-        for i in range(files_count):
-            file_path = folder.joinpath(get_file_name(i, params))
-            with open(file_path, 'w') as file:
-                json.dump(lines, file)
+        file_utils.save(lines, params)
 
 
-def get_file_name(i, params):
-    return '{}_{}.json'.format(params.file_name, get_prefix(params.file_prefix, i))
-
-
-def get_prefix(file_prefix, index):
-    switcher = {
-        "count": lambda: index,
-        "random": lambda: random.randint(1, 9999),
-        "uuid": lambda: str(uuid.uuid4())
-    }
-    func = switcher.get(file_prefix)
-    if not func:
-        raise ConsoleException('Wrong prefix type: {}'.format(file_prefix))
-    return func()
+def _get_file_count(value):
+    if value < 0:
+        raise ConsoleException('File count cannot be less than 0')
+    return value
 
 
 if __name__ == '__main__':
