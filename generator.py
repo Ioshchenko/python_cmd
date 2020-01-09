@@ -1,4 +1,5 @@
 import argparse
+import configparser
 import json
 import sys
 
@@ -6,16 +7,27 @@ import shema
 import file_utils
 from console_exception import ConsoleException
 
-parser = argparse.ArgumentParser(description='Console utility for generating test data based on provided data schema')
-parser.add_argument('-path_to_save_files', help='Where all files need to save.')
-parser.add_argument('-data_schema', help='Json schema.')
-parser.add_argument('-data_lines', help='Count of lines for each file.', nargs='?', const=1, type=int, default=3)
-parser.add_argument('-files_count', help='Json file count. If files_count = 0 print all output to console.', type=int,
-                    default=1)
-parser.add_argument('-file_name', help='Base file_name.', default='data')
-parser.add_argument('-file_prefix', help='Prefix for file name to use if it more that 1 file.', default='count')
-parser.add_argument('-clear_path', help='If this flag is on, before the script starts creating new data files, '
-                                        'all files in path_to_save_files that match file_name will be deleted.', default='on')
+config = configparser.ConfigParser()
+config.read('default.ini')
+
+parser = argparse.ArgumentParser(description='Console utility for generating test data based on provided data schema',
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--path_to_save_files', help='Where all files need to save.',
+                    default=config['args']['path_to_save_files'])
+parser.add_argument('--data_schema', help='Json schema.')
+parser.add_argument('--data_lines', help='Count of lines for each file.',
+                    type=int,
+                    default=config['args']['data_lines'])
+parser.add_argument('--files_count', help='Json file count. If files_count = 0 print all output to console.',
+                    type=int,
+                    default=config['args']['files_count'])
+parser.add_argument('--file_name', help='Base file_name.',
+                    default=config['args']['file_name'])
+parser.add_argument('--file_prefix', help='Prefix for file name to use if it more that 1 file.',
+                    default=config['args']['file_prefix'])
+parser.add_argument('--clear_path', help='If this flag is on, before the script starts creating new data files, '
+                                         'all files in path_to_save_files that match file_name will be deleted.',
+                    default=config['args']['clear_path'])
 
 
 def generate(params):
