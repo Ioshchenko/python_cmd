@@ -16,7 +16,8 @@ def save(lines, file_path):
 
 def clean_dir(files):
     for file in files:
-        os.remove(file)
+        if os.path.exists(file):
+            os.remove(file)
     logging.info('Clean up folder')
 
 
