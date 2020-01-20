@@ -1,6 +1,5 @@
 import json
 import random
-import stat
 import uuid
 from pathlib import Path
 from console_exception import ConsoleException
@@ -9,12 +8,21 @@ import logging
 
 
 def save(lines, file_path):
+    """
+    Saved json objects to the file.
+    :param lines: json objects
+    :param file_path: file path
+    """
     logging.info('Save data to the file:{}'.format(file_path))
     with open(file_path, 'w') as file:
         json.dump(lines, file)
 
 
 def clean_dir(files):
+    """
+    Deleted files.
+    :param files: list of files
+    """
     for file in files:
         if os.path.exists(file):
             os.remove(file)
@@ -22,6 +30,11 @@ def clean_dir(files):
 
 
 def generate_file_name(params):
+    """
+    Generated file names based on parameters
+    :param params: params from command line
+    :return: list of file names
+    """
     folder = _get_path(params)
     return [folder.joinpath(_get_file_name(i, params)) for i in range(params.files_count)]
 

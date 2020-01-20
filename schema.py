@@ -10,6 +10,12 @@ from console_exception import ConsoleException
 
 
 def generate(data, limit):
+    """
+    Generate JSON objects based on the schema.
+    :param data: JSON schema
+    :param limit: number of lines
+    :return: JSON objects
+    """
     logging.info('Generate data based on the schema')
     schema = json.loads(data)
     lines = []

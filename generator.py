@@ -37,6 +37,10 @@ def set_up():
 
 
 def generate(params):
+    """
+    Generate test data and stored to the files or print in the console.
+    :param params: params from command line
+    """
     files_count = _get_file_count(params.files_count)
     if files_count == 0:
         lines = schema.generate(params.data_schema, params.data_lines)
