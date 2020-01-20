@@ -3,7 +3,7 @@ import configparser
 import json
 import sys
 
-import shema
+import schema
 import file_utils
 import logging
 from console_exception import ConsoleException
@@ -39,14 +39,14 @@ def set_up():
 def generate(params):
     files_count = _get_file_count(params.files_count)
     if files_count == 0:
-        lines = shema.generate(params.data_schema, params.data_lines)
+        lines = schema.generate(params.data_schema, params.data_lines)
         logging.info(json.dumps(lines, indent=2))
     else:
         files = file_utils.generate_file_name(params)
         if params.clear_path == "on":
             file_utils.clean_dir(files)
         for file in files:
-            lines = shema.generate(params.data_schema, params.data_lines)
+            lines = schema.generate(params.data_schema, params.data_lines)
             file_utils.save(lines, file)
 
 
